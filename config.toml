@@ -1,0 +1,19 @@
+[config]
+# 服务器默认监听地址
+addr="127.0.0.1:5000"
+# 数据库目录
+dir_path = "/tmp/kvStore/kvFiles"
+# 数据库文件IO模式
+method = 0
+# 索引表键值模式， 0表示键值都在内存中
+idx_mode = 0
+# 数据库文件大小1*1024*124
+block_size = 16777216
+# 同步到文件
+sync = false
+# 键最大长度
+max_key_size = 128
+# 值最大长度
+max_value_size = 1048576
+# 归档文件数量到达该值，可以进行冗余处理
+re_write_threshold = 4
