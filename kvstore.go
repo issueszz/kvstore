@@ -74,12 +74,12 @@ func Open(config *Config) (*Kvstore, error) {
 		}
 	}
 	//加载数据文件
-	archFiles, activeFileId, err := store.Build(config.DirPath, config.Method)
+	archFiles, activeFileId, err := store.Build(config.DirPath, config.Method, config.BlockSize)
 	if err != nil {
 		return nil, err
 	}
 	// 建立当前活跃文件
-	file, err := store.NewKvFile(config.DirPath, activeFileId, config.Method)
+	file, err := store.NewKvFile(config.DirPath, activeFileId, config.Method, config.BlockSize)
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +194,7 @@ func(k *Kvstore) store(e *store.Entry) error {
 		k.archFiles[k.activeFileId] = k.activeFile
 
 		// 打开新的文件
-		file, err := store.NewKvFile(config.DirPath, k.activeFileId+1, config.Method)
+		file, err := store.NewKvFile(config.DirPath, k.activeFileId+1, config.Method, config.BlockSize)
 		if err != nil {
 			return err
 		}
@@ -271,7 +271,7 @@ func (k *Kvstore) Rewrite() error {
 			for _, e := range newEntries {
 				// 判断当前文件是否为空， 或者剩余位置是否满足写入
 				if df == nil || (df.Offset + int64(e.Size())) > k.config.BlockSize {
-					df, err = store.NewKvFile(rewrites, activeFileId, k.config.Method)
+					df, err = store.NewKvFile(rewrites, activeFileId, k.config.Method, k.config.BlockSize)
 					if err != nil {
 						return err
 					}
@@ -313,7 +313,7 @@ func (k *Kvstore) Rewrite() error {
 
 	// 重写之后， 更新数据库信息
 	if activeFileId == 0 {
-		df, err = store.NewKvFile(k.config.DirPath, activeFileId, k.config.Method)
+		df, err = store.NewKvFile(k.config.DirPath, activeFileId, k.config.Method, k.config.BlockSize)
 		if err != nil {
 			return err
 		}

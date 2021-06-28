@@ -17,7 +17,7 @@ const (
 	DefaultDirPath = "/tmp/kvStore/kvFiles"
 
 	// DefaultMethod IO模式
-	DefaultMethod = store.FileIO
+	DefaultMethod = store.MmapIO
 
 	// DefaultBlockSize 默认每个数据文件的大小
 	DefaultBlockSize = 16 * 1024

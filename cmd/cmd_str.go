@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"kvstore"
+	"strconv"
 )
 
 var ErrSyntax = errors.New("invalid syntax")
@@ -30,7 +31,23 @@ func get(kv *kvstore.Kvstore, args []string) (res string, err error) {
 	return
 }
 
+func expire(kv *kvstore.Kvstore, args []string) (res string, err error) {
+	if len(args) != 2 {
+		err = ErrSyntax
+		return
+	}
+	seconds, err := strconv.Atoi(args[1])
+	if err != nil {
+		err = ErrSyntax
+		return
+	}
+	if err = kv.Expire([]byte(args[0]), uint64(seconds)); err == nil {
+		res = "OK"
+	}
+	return
+}
 func init() {
 	addCmdHandle("set", set)
 	addCmdHandle("get", get)
+	addCmdHandle("expire", expire)
 }

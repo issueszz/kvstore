@@ -20,6 +20,7 @@ var (
 	commandLists = [][]string{
 		{"set", "key value", "string"},
 		{"get", "key", "string"},
+		{"expire", "key value", "string"},
 	}
 	historyFn = filepath.Join(os.TempDir(), ".liner_example_history")
 )
